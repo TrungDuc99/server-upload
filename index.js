@@ -5,6 +5,7 @@ const path = require("path");
 const multer = require("multer");
 const logger = require("morgan");
 const serveIndex = require("serve-index");
+require("dotenv").config();
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -38,7 +39,7 @@ app.get("/", function (req, res) {
   return res.send("hello from my app express server!");
 });
 
-app.post("/testUpload", upload.single("file"), function (req, res) {
+app.post("/UploadFile", upload.single("file"), function (req, res) {
   debug(req.file);
   console.log("storage location is ", req.hostname + "/" + req.file.path);
   return res.send(req.file);
@@ -50,4 +51,5 @@ app.use("/users", userRouter);
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   debug("Server is up and running on port ", port);
+  console.log(`Server is running at port http://localhost:${port}`);
 });
