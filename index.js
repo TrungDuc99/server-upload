@@ -46,7 +46,7 @@ app.post("/uploadfile", upload.single("file"), function (req, res) {
   return res.send({
     ...req.file,
     // url: `http://localhost:${port}/ftp/uploads/${req.file.filename}`,
-    url: `https://server-uploadfile.ducdt.online:${port}/ftp/uploads/${req.file.filename}`,
+    url: `https://server-uploadfile.ducdt.online/ftp/uploads/${req.file.filename}`,
   });
 });
 
@@ -57,7 +57,7 @@ app.post("/uploadmultiple", upload.array("files", 12), (req, res, next) => {
     return {
       ...file,
       //   url: `http://localhost:${port}/ftp/uploads/${file.filename}`,
-      url: `https://server-uploadfile.ducdt.online:${port}/ftp/uploads/${file.filename}`,
+      url: `https://server-uploadfile.ducdt.online/ftp/uploads/${file.filename}`,
     };
   });
   if (!files) {
