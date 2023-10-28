@@ -74,10 +74,10 @@ var FileCallback = /** @class */ (function () {
                         var fileInfos = [];
                         files.forEach(function (file) {
                             fileInfos.push({
-                                url: "".concat(baseUrl).concat(file),
-                                //    url: `${baseUrlProduction}${req.file.filename}`,
-                                removeFileUrl: "".concat(removeFileUrl).concat(file),
-                                //   removeFileUrl: `${removeFileUrlProduction}${req.file.filename}`,
+                                // url: `${baseUrl}${file}`,
+                                url: "".concat(baseUrlProduction).concat(file),
+                                // removeFileUrl: `${removeFileUrl}${file}`,
+                                removeFileUrl: "".concat(removeFileUrlProduction).concat(file),
                             });
                         });
                         res.status(200).send(fileInfos);
@@ -95,9 +95,11 @@ var FileCallback = /** @class */ (function () {
             return __generator(this, function (_a) {
                 try {
                     debug(req.file);
-                    return [2 /*return*/, res.send(__assign(__assign({}, req.file), { url: "".concat(baseUrl).concat(req.file.filename), 
-                            //    url: `${baseUrlProduction}${req.file.filename}`,
-                            removeFileUrl: "".concat(removeFileUrl).concat(req.file.filename) }))];
+                    return [2 /*return*/, res.send(__assign(__assign({}, req.file), { 
+                            // url: `${baseUrl}${req.file.filename}`,
+                            url: "".concat(baseUrlProduction).concat(req.file.filename), 
+                            // removeFileUrl: `${removeFileUrl}${req.file.filename}`,
+                            removeFileUrl: "".concat(removeFileUrlProduction).concat(req.file.filename) }))];
                 }
                 catch (err) {
                     res.status(500).json({ error: err });
@@ -114,9 +116,11 @@ var FileCallback = /** @class */ (function () {
                     debug(req.files);
                     files = req.files;
                     newFiles = files.map(function (file) {
-                        return __assign(__assign({}, file), { url: "".concat(baseUrl).concat(req.file.filename), 
-                            //    url: `${baseUrlProduction}${req.file.filename}`,
-                            removeFileUrl: "".concat(removeFileUrl).concat(req.file.filename) });
+                        return __assign(__assign({}, file), { 
+                            // url: `${baseUrl}${req.file.filename}`,
+                            url: "".concat(baseUrlProduction).concat(req.file.filename), 
+                            // removeFileUrl: `${removeFileUrl}${req.file.filename}`,
+                            removeFileUrl: "".concat(removeFileUrlProduction).concat(req.file.filename) });
                     });
                     if (!files) {
                         res.status(400).json({ error: 'Please choose files' });

@@ -5,42 +5,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var cors_1 = __importDefault(require("cors"));
+var path = require('path');
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var morgan_1 = __importDefault(require("morgan"));
 var file_1 = __importDefault(require("./routes/file"));
 var serveIndex = require('serve-index');
 var bodyParser = require('body-parser');
 var debug = require('debug')('backend:server');
+var http = require('http');
 require('dotenv').config();
 // const redis = require('redis')
-var app = (0, express_1.default)();
 var PORT = parseInt(process.env.PORT, 10) || 9888;
+var secretKey = process.env.TOKEN_SECRET_KEY;
+var app = (0, express_1.default)();
+app.set('view engine', 'jade');
 app.use(express_1.default.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)('dev'));
 app.use(express_1.default.urlencoded({ extended: false }));
-// app.use('/ftp', express.static('public'), serveIndex('public', { icons: true }))
 app.use('/ftp', function (req, res, next) {
-    console.log('====================================');
-    console.log(req);
-    console.log('====================================');
-    if (req.url === '/ftp/') {
-        res.status(403).send({
-            message: 'Access Forbidden',
-        });
+    if (req.url === '/' || req.url === '/uploads/') {
+        var authHeader = req.headers.authorization;
+        var token = authHeader && authHeader.split(' ')[1];
+        var decodedToken = jsonwebtoken_1.default.verify(token, secretKey);
+        if (decodedToken.user.isAdmin) {
+            app.use('/ftp', express_1.default.static(process.cwd() + 'public'), serveIndex('public', { icons: true }));
+            next();
+        }
+        else {
+            res.status(403).send({
+                message: 'Access Forbidden',
+            });
+        }
     }
     else {
-        app.use('/ftp', express_1.default.static('public'), serveIndex('public', { icons: true }));
+        app.use('/ftp', express_1.default.static(process.cwd() + 'public'), serveIndex('public', { icons: true }));
         next();
     }
-    // or whatever
 });
-// app.use(
-//   '/ftp',
-//   express.static('media'),
-//   express.static(path.join(process.cwd(), 'media')),
-//   serveIndex('media', { icons: true })
-// )
 // app.get('/', function (req, res) {
 //   res.writeHead(200, { 'Content-Type': 'text/html' })
 //   res.write(
@@ -57,6 +60,14 @@ app.use('/ftp', function (req, res, next) {
 //   res.write('</form>')
 //   return res.end()
 // })
+app.get('/login', function (req, res) {
+    app.use(express_1.default.static(path.join(process.cwd())));
+    res.sendFile(process.cwd() + '/login.html');
+});
+app.get('/hupload', function (req, res) {
+    app.use(express_1.default.static(path.join(process.cwd())));
+    res.sendFile(process.cwd() + '/login.html');
+});
 // routes api
 app.use('/api', file_1.default);
 app.listen(PORT, function () {
