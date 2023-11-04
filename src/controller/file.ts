@@ -3,12 +3,11 @@ const debug = require('debug')('server-upload:server')
 const fs = require('fs')
 require('dotenv').config()
 const PORT = parseInt(<string>process.env.PORT, 10) || 9888
-const URL = parseInt(<string>process.env.URL, 10) || 9888
 
 const baseUrl = `http://localhost:${PORT}/ftp/uploads/`
 const removeFileUrl = `http://localhost:${PORT}/api/removefile/`
-const baseUrlProduction = `${URL}/ftp/uploads/`
-const removeFileUrlProduction = `${URL}/api/removefile/`
+const baseUrlProduction = `${process.env.URL}/ftp/uploads/`
+const removeFileUrlProduction = `${process.env.URL}/api/removefile/`
 interface FileI {
   fieldname: string
   originalname: string
@@ -56,6 +55,7 @@ export default class FileCallback {
 
       return res.send({
         ...req.file,
+        caption: req.body.caption || '',
         // url: `${baseUrl}${req.file.filename}`,
         url: `${baseUrlProduction}${req.file.filename}`,
         // removeFileUrl: `${removeFileUrl}${req.file.filename}`,
@@ -72,6 +72,7 @@ export default class FileCallback {
       let newFiles = files.map((file: any) => {
         return {
           ...file,
+          caption: req.body.caption || '',
           // url: `${baseUrl}${req.file.filename}`,
           url: `${baseUrlProduction}${req.file.filename}`,
           // removeFileUrl: `${removeFileUrl}${req.file.filename}`,

@@ -51,11 +51,10 @@ var debug = require('debug')('server-upload:server');
 var fs = require('fs');
 require('dotenv').config();
 var PORT = parseInt(process.env.PORT, 10) || 9888;
-var URL = parseInt(process.env.URL, 10) || 9888;
 var baseUrl = "http://localhost:".concat(PORT, "/ftp/uploads/");
 var removeFileUrl = "http://localhost:".concat(PORT, "/api/removefile/");
-var baseUrlProduction = "".concat(URL, "/ftp/uploads/");
-var removeFileUrlProduction = "".concat(URL, "/api/removefile/");
+var baseUrlProduction = "".concat(process.env.URL, "/ftp/uploads/");
+var removeFileUrlProduction = "".concat(process.env.URL, "/api/removefile/");
 var FileCallback = /** @class */ (function () {
     function FileCallback() {
     }
@@ -95,7 +94,7 @@ var FileCallback = /** @class */ (function () {
             return __generator(this, function (_a) {
                 try {
                     debug(req.file);
-                    return [2 /*return*/, res.send(__assign(__assign({}, req.file), { 
+                    return [2 /*return*/, res.send(__assign(__assign({}, req.file), { caption: req.body.caption || '', 
                             // url: `${baseUrl}${req.file.filename}`,
                             url: "".concat(baseUrlProduction).concat(req.file.filename), 
                             // removeFileUrl: `${removeFileUrl}${req.file.filename}`,
@@ -116,7 +115,7 @@ var FileCallback = /** @class */ (function () {
                     debug(req.files);
                     files = req.files;
                     newFiles = files.map(function (file) {
-                        return __assign(__assign({}, file), { 
+                        return __assign(__assign({}, file), { caption: req.body.caption || '', 
                             // url: `${baseUrl}${req.file.filename}`,
                             url: "".concat(baseUrlProduction).concat(req.file.filename), 
                             // removeFileUrl: `${removeFileUrl}${req.file.filename}`,

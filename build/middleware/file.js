@@ -10,7 +10,8 @@ var storage = multer_1.default.diskStorage({
         cb(null, './public/uploads');
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + file.originalname);
+        // cb(null, file.fieldname + '-' + Date.now() + file.originalname)
+        cb(null, req.body.title);
     },
 });
 exports.upload = (0, multer_1.default)({ storage: storage });

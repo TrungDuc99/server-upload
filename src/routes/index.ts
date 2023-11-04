@@ -1,2 +1,3 @@
 import FileRouter from './file'
-export { FileRouter }
+import AuthRouter from './Auth'
+export { FileRouter, AuthRouter }
