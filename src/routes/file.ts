@@ -8,13 +8,12 @@ const FileRouter = Router()
 
 FileRouter.post(
   '/uploadfile',
-  authenticateToken,
+
   upload.single('file'),
   FileCallback.uploadFile
 )
 FileRouter.post(
   '/uploadmultiple',
-  authenticateToken,
   upload.array('files', 12),
   FileCallback.uploadmultiple
 )
